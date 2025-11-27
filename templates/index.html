@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant Draft Helper</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="bg-effects">
+        <div class="bg-gradient"></div>
+        <div class="grid-overlay"></div>
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">🎮</div>
+                <div class="logo-text">
+                    <h1>Draft Helper</h1>
+                    <span>Powered by Gemini 2.5</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <div class="stat-value">25+</div>
+                    <div class="stat-label">Agentes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Mapas</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>⚡ Ferramentas</h3>
+                    <div class="tool-grid">
+                        <button class="tool-btn" onclick="executeTool('get_agents_meta')">
+                            <span class="icon">📊</span>Tier List
+                        </button>
+                        <button class="tool-btn" onclick="executeTool('get_all_maps')">
+                            <span class="icon">🗺️</span>Mapas
+                        </button>
+                        <button class="tool-btn" onclick="askMap()">
+                            <span class="icon">🎯</span>Meta
+                        </button>
+                        <button class="tool-btn" onclick="askPlayer()">
+                            <span class="icon">👤</span>Player
+                        </button>
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <h3>📋 Roles</h3>
+                    <div class="agent-list">
+                        <span class="agent-tag duelist">Duelist</span>
+                        <span class="agent-tag controller">Controller</span>
+                        <span class="agent-tag initiator">Initiator</span>
+                        <span class="agent-tag sentinel">Sentinel</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <div class="status-dot"></div>
+                        <h2>Assistente Online</h2>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="action-btn" onclick="clearChat()">🗑️ Limpar</button>
+                    </div>
+                </div>
+
+                <div id="chat-box">
+                    <div class="welcome">
+                        <div class="welcome-icon">🎮</div>
+                        <h2>Draft Helper</h2>
+                        <p>Seu coach de Valorant com IA</p>
+                        <div class="feature-cards">
+                            <div class="feature-card">
+                                <div class="icon">📸</div>
+                                <h4>Análise Visual</h4>
+                                <p>Envie print da seleção</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="icon">📊</div>
+                                <h4>Stats Tempo Real</h4>
+                                <p>Dados do Tracker.gg</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="icon">🎯</div>
+                                <h4>Meta Atual</h4>
+                                <p>Tier list atualizada</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="icon">💡</div>
+                                <h4>Recomendações</h4>
+                                <p>Pick ideal pra você</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-area">
+                    <div id="preview-container">
+                        <img id="preview-image" src="" alt="Preview">
+                        <button id="remove-preview" onclick="removeImage()">×</button>
+                    </div>
+                    <div class="input-row">
+                        <input type="file" id="file-input" accept="image/*" onchange="previewImage(event)">
+                        <button class="file-btn" onclick="document.getElementById('file-input').click()">📎</button>
+                        <input type="text" id="message-input" placeholder="Digite sua mensagem..." onkeypress="handleKeyPress(event)">
+                        <button id="send-btn" onclick="sendMessage()">➤</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
