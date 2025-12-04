@@ -1,7 +1,10 @@
+# Google ADK
 google-adk
 google-genai
 google-generativeai
+
+# Ambiente e configuração
 python-dotenv
-playwright
-requests
+
+# Interface web
 flask

@@ -145,78 +145,60 @@ async function sendMessage() {
 }
 
 async function executeTool(toolName, params = {}) {
-    showLoading();
+    // Redireciona para o chat - o agente usa google_search para buscar dados
+    let message = '';
     
-    try {
-        const response = await fetch(`/tool/${toolName}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(params)
-        });
-        
-        const data = await response.json();
-        hideLoading();
-        
-        if (data.error) {
-            addMessage(`❌ ${data.error}`, false);
-        } else {
-            let formatted = formatToolResult(toolName, data);
-            addMessage(formatted, false);
-        }
-    } catch (error) {
-        hideLoading();
-        addMessage(`❌ Erro: ${error.message}`, false);
+    switch(toolName) {
+        case 'get_agents_meta':
+            message = 'Qual a tier list atual dos agentes?';
+            break;
+        case 'get_map_meta':
+            message = `Quais os melhores agentes para o mapa ${params.map_name}?`;
+            break;
+        case 'get_player_stats':
+            message = `Busque informações sobre o jogador ${params.nickname}#${params.tag}`;
+            break;
+        case 'get_all_maps':
+            message = 'Quais são os mapas ativos no competitivo?';
+            break;
+        default:
+            message = `Execute a ferramenta ${toolName}`;
     }
+    
+    // Coloca a mensagem no input e envia
+    document.getElementById('message-input').value = message;
+    await sendMessage();
 }
 
 function formatToolResult(toolName, data) {
     switch(toolName) {
-        case 'get_agents_meta':
-            if (data.tiers) {
-                return `📊 **Tier List Atual**\n\n` +
-                    `🔴 **Tier S:** ${data.tiers.S?.join(', ') || 'N/A'}\n\n` +
-                    `🟠 **Tier A:** ${data.tiers.A?.join(', ') || 'N/A'}\n\n` +
-                    `🟡 **Tier B:** ${data.tiers.B?.join(', ') || 'N/A'}`;
-            }
-            break;
         case 'get_all_maps':
             if (data.maps) {
                 return `🗺️ **Mapas Disponíveis**\n\n${data.maps.map(m => `• ${m.charAt(0).toUpperCase() + m.slice(1)}`).join('\n')}`;
-            }
-            break;
-        case 'get_player_stats':
-            if (data.status === 'success') {
-                let agents = data.top_agents.map(a => 
-                    `  • **${a.name}**: ${a.winrate}% WR, ${a.kd} KD, ${a.matches} partidas`
-                ).join('\n');
-                return `👤 **${data.player}**\n\n🏆 **Rank:** ${data.rank}\n\n🎮 **Top Agentes:**\n${agents}`;
-            }
-            break;
-        case 'get_map_meta':
-            if (data.status === 'success') {
-                return `🗺️ **Meta de ${data.map}**\n\n` +
-                    `🔴 **Tier S:** ${data.tiers?.S?.join(', ') || 'N/A'}\n\n` +
-                    `🟠 **Tier A:** ${data.tiers?.A?.join(', ') || 'N/A'}\n\n` +
-                    `💡 **Comp Recomendada:** ${data.recommended_comp?.join(' / ') || 'N/A'}`;
             }
             break;
     }
     return `\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\``;
 }
 
+function askTierList() {
+    document.getElementById('message-input').value = 'Qual a tier list atual dos agentes no meta?';
+    sendMessage();
+}
+
 function askMap() {
-    const map = prompt('Qual mapa? (ascent, bind, haven, split, lotus, sunset, breeze, icebox, abyss)');
+    const map = prompt('Qual mapa? (ascent, bind, haven, split, lotus, sunset, icebox, abyss, pearl)');
     if (map) {
-        executeTool('get_map_meta', { map_name: map });
+        document.getElementById('message-input').value = `Quais os melhores agentes para ${map}?`;
+        sendMessage();
     }
 }
 
 function askPlayer() {
     const nick = prompt('Nick#Tag do jogador (ex: Player#BR1):');
     if (nick) {
-        addMessage(`🔍 Buscando ${nick}...`, false);
-        const [nickname, tag] = nick.split('#');
-        executeTool('get_player_stats', { nickname: nickname, tag: tag || 'BR1' });
+        document.getElementById('message-input').value = `Busque informações sobre ${nick}`;
+        sendMessage();
     }
 }
 
@@ -238,9 +220,9 @@ function getWelcomeHTML() {
                     <p>Envie print da seleção</p>
                 </div>
                 <div class="feature-card">
-                    <div class="icon">📊</div>
-                    <h4>Stats em Tempo Real</h4>
-                    <p>Dados do Tracker.gg</p>
+                    <div class="icon">🔍</div>
+                    <h4>Busca na Web</h4>
+                    <p>Dados atualizados</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🎯</div>

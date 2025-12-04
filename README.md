@@ -1,116 +1,75 @@
-# 🎮 Valorant Draft Helper
+﻿#  Valorant Draft Helper
 
-<div align="center">
+Assistente de IA para ajudar na seleção de agentes (agent select) no Valorant.
 
-![Valorant](https://img.shields.io/badge/VALORANT-ff4655?style=for-the-badge&logo=valorant&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.10+-3776ab?style=for-the-badge&logo=python&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini_2.5-4285F4?style=for-the-badge&logo=google&logoColor=white)
+##  Funcionalidades
 
-**Seu coach de Valorant com IA** 🤖
+- **Análise de tela de seleção** - Envie uma imagem do agent select e receba recomendações
+- **Tier list atualizada** - Meta do Episode 9 Act 3
+- **Análise de composição** - Verifica se seu time tem as roles necessárias
+- **Recomendações por mapa** - Agentes específicos para cada mapa
+- **Interface web** - Chat com suporte a imagens
 
-Envie uma foto da tela de seleção e receba recomendações personalizadas!
+##  Como usar
 
-</div>
-
----
-
-## ✨ Features
-
-| Feature | Descrição |
-|---------|-----------|
-| 📸 **Análise de Imagem** | Envia print da seleção, IA identifica mapa e agentes |
-| 📊 **Stats em Tempo Real** | Busca dados do Tracker.gg automaticamente |
-| 🎯 **Tier List Atualizada** | Meta atual de todos os mapas |
-| 💡 **Recomendações** | Sugere o melhor pick baseado no seu perfil |
-
----
-
-## 🚀 Como Rodar
-
-### 1️⃣ Clone o repositório
-```bash
-git clone https://github.com/joaomottin/DraftHelperValorant.git
-cd DraftHelperValorant
-```
-
-### 2️⃣ Instale as dependências
-```bash
+### 1. Instalar dependências
+`ash
 pip install -r requirements.txt
-playwright install chromium
-```
+`
 
-### 3️⃣ Configure a API Key
-Crie um arquivo `.env` na pasta do projeto:
-```env
+### 2. Configurar API Key
+Crie um arquivo `.env`:
+`
 GOOGLE_API_KEY=sua_chave_aqui
-```
+`
 
-> 🔑 Pegue sua chave em: [Google AI Studio](https://aistudio.google.com/apikey)
+### 3. Executar
 
-### 4️⃣ Rode o servidor
-```bash
+**Interface Web:**
+`ash
 python app.py
-```
+`
+Acesse: http://localhost:5000
 
-### 5️⃣ Acesse no navegador
-```
-http://127.0.0.1:5000
-```
+**CLI:**
+`ash
+python agent.py
+`
 
----
+##  Estrutura
 
-## 📁 Estrutura
-
-```
+`
 ValorantHelper/
-├── app.py          # Servidor Flask
-├── agent.py        # Agente ADK (alternativo)
-├── tools.py        # Ferramentas de busca
-├── scraper.py      # Web scraper Tracker.gg
-├── .env            # API Key (criar)
-├── requirements.txt
-├── static/
-│   ├── style.css   # Estilos
-│   └── script.js   # JavaScript
-└── templates/
-    └── index.html  # Interface
-```
+ agent.py           # Agente principal (LlmAgent)
+ app.py             # Interface web Flask
+ instructions.md    # Instruções do agente
+ data/
+    meta_data.py   # Dados do meta (fallback)
+ tools/
+    agent_tools.py # Ferramentas do agente
+ static/            # CSS e JavaScript
+ templates/         # HTML
+ tests/             # Testes
+`
 
----
+##  Ferramentas disponíveis
 
-## 🎮 Como Usar
+| Ferramenta | Descrição |
+|------------|-----------|
+| `get_agents_meta()` | Tier list geral de agentes |
+| `get_map_meta(map_name)` | Melhores agentes para um mapa |
+| `get_all_maps()` | Lista de mapas ativos |
+| `analyze_team_composition(agents)` | Analisa composição de time |
+| `get_agent_info(agent_name)` | Info de um agente específico |
+| `recommend_agents_for_draft(...)` | Recomendações contextuais |
 
-1. **Envie uma imagem** da tela de seleção de agentes
-2. A IA vai identificar o **mapa** e os **agentes** já escolhidos
-3. Digite seu **nick#tag** para buscar suas stats
-4. Receba **recomendações** personalizadas!
+##  Testes
+`ash
+python tests/test_tools.py
+`
 
-### Comandos Rápidos (Sidebar)
-- 📊 **Tier List** - Meta atual de todos os agentes
-- 🗺️ **Mapas** - Lista de mapas disponíveis  
-- 🎯 **Meta** - Tier list específica de um mapa
-- 👤 **Player** - Buscar stats de um jogador
+##  Notas
 
----
-
-## 🔧 Requisitos
-
-- Python 3.10+
-- Google Chrome instalado
-- Chave da API Gemini
-
----
-
-## 📝 Licença
-
-MIT License - Use à vontade! 🎉
-
----
-
-<div align="center">
-
-**Feito com ❤️ para a comunidade Valorant**
-
-⭐ Deixe uma star se curtiu!
-
-</div>
+- O agente responde **apenas em português**
+- Envie apenas imagens da **tela de seleção de agentes**
+- Dados do meta são atualizados periodicamente no arquivo `data/meta_data.py`
